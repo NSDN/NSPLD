@@ -1,0 +1,75 @@
+> alta::tcl_whisper "Cmd : [alta::prog_path] [alta::prog_version]([alta::prog_subversion])\n"
+Cmd : D:/Dev/Supra/bin/af.exe 2021.06.b0(66adbd53)
+> alta::tcl_whisper "Args : [string map {\{ \" \} \"} $tcl_cmd_args]\n"
+Args : -X "set QUARTUS_SDC true" -X "set bitgen_use_block_erase false" -X "set MODE QUARTUS" -X "set FLOW GEN" -X "set BOOT_BINARY "E:/Works/NSPLD/AGM/NSPLD.bin"" -X "set ERASE true" -X "set PROGRAM true" -X "set VERIFY false" -X "set OFFSET 0" -F ./af_run.tcl
+> 
+> set_seed_rand $SEED
+> set ar_timing_derate ${TIMING_DERATE}
+> 
+> date_time
+Fri May 20 13:31:29 2022
+> if { [file exists "./${DESIGN}.pre.asf"] } {
+  alta::tcl_highlight "Using pre-ASF file ${DESIGN}.pre.asf.\n"
+  source "./${DESIGN}.pre.asf"
+}
+Using pre-ASF file NSPLD.pre.asf.
+> 
+> eval "load_architect ${no_route} -type ${DEVICE} 1 1 1000 1000"
+Total IO  : 84
+Total Pin : 40/7
+Top array is built.
+Loading architect libraries...
+## CPU time: 0:0:0, REAL time: 0:0:0
+## Memory Usage: 30MB (30MB)
+> foreach ip_file $IP_FILES { read_ip $ip_file; }
+> 
+> set LOAD_DB    false
+> set LOAD_PLACE false
+> set LOAD_ROUTE false
+> if { $FLOW == "LOAD" || $FLOW == "CHECK" || $FLOW == "PROBE" } {
+  set LOAD_DB    true
+  set LOAD_PLACE true
+  set LOAD_ROUTE true
+} elseif { $FLOW == "R" || $FLOW == "ROUTE" } {
+  set LOAD_DB    true
+  set LOAD_PLACE true
+}
+> 
+> set ORIGINAL_QSF "E:/Works/NSPLD/./NSPLD.qsf"
+> set ORIGINAL_PIN "E:/Works/NSPLD/output_files/NSPLD.pin"
+> 
+> #################################################################################
+> 
+> if { $FLOW == "GEN" } {
+  if { ! [info exists CONFIG_BITS] } {
+    set CONFIG_BITS "${RESULT_DIR}/${DESIGN}.bin"
+  }
+  if { [llength $CONFIG_BITS] > 1 } {
+    if { ! [info exists BOOT_BINARY] } {
+      set BOOT_BINARY "${RESULT_DIR}/${DESIGN}_boot.bin"
+    }
+    if { ! [info exists CONFIG_ADDRESSES] } {
+      set CONFIG_ADDRESSES ""
+    }
+    generate_binary -master $BOOT_BINARY -inputs $CONFIG_BITS -address $CONFIG_ADDRESSES
+  } else {
+    set CONFIG_ROOT   [file rootname [lindex $CONFIG_BITS 0]]
+    set SLAVE_RBF     "${CONFIG_ROOT}_slave.rbf"
+    set MASTER_BINARY "${CONFIG_ROOT}_master.bin"
+    if { [file exists [lindex $CONFIG_BITS 0]] } {
+      generate_binary -slave  $SLAVE_RBF     -inputs [lindex $CONFIG_BITS 0] -reverse
+      generate_binary -master $MASTER_BINARY -inputs [lindex $CONFIG_BITS 0]
+    }
+    if { ! [info exists BOOT_BINARY] } {
+      set BOOT_BINARY $MASTER_BINARY
+    }
+  }
+  set PRG_FILE [file rootname $BOOT_BINARY].prg
+  set AS_FILE  [file rootname $BOOT_BINARY]_as.prg
+  generate_programming_file $BOOT_BINARY -erase $ERASE \
+                            -program $PROGRAM -verify $VERIFY -offset $OFFSET \
+                            -prg $PRG_FILE -as $AS_FILE
+  exit
+}
+
+Total 0 fatals, 0 errors, 0 warnings, 0 infos.

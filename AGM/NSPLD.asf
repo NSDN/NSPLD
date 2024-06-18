@@ -1,0 +1,4 @@
+set_location_assignment -to nRST PIN_25
+set_location_assignment -to CLK PIN_13
+set_location_assignment -to LED[0] PIN_22
+set_location_assignment -to LED[1] PIN_23

@@ -1,0 +1,5 @@
+Warn: Can not find ASF file ./NSPLD.asf, create a empty one.
+Info: Can not find ASF file ./NSPLD.pre.asf, create a empty one.
+Info: Can not find ASF file ./NSPLD.post.asf, create a empty one.
+
+Total 0 fatals, 0 errors, 1 warnings, 2 infos.

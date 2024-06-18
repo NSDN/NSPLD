@@ -1,0 +1,8 @@
+set_location_assignment -to nRST PIN_25
+set_location_assignment -to CLK PIN_13
+set_location_assignment -to LED[1] PIN_23
+set_location_assignment -to LED[0] PIN_22
+set_instance_assignment -name IO_STANDARD -to nRST "3.3-V LVTTL"
+set_instance_assignment -name IO_STANDARD -to CLK "3.3-V LVTTL"
+set_instance_assignment -name IO_STANDARD -to LED[1] "3.3-V LVTTL"
+set_instance_assignment -name IO_STANDARD -to LED[0] "3.3-V LVTTL"

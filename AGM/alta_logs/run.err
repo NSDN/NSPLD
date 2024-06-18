@@ -1,0 +1,9 @@
+Info: Found GCLK net CLK~inputclkctrl_outclk (4).
+Warn: Location PIN_114 in file E:/Works/NSPLD/output_files/NSPLD.pin line 181 is not found in device.
+Warn: Location PIN_118 in file E:/Works/NSPLD/output_files/NSPLD.pin line 185 is not found in device.
+Warn: Location PIN_119 in file E:/Works/NSPLD/output_files/NSPLD.pin line 186 is not found in device.
+Info: Auto constraint: create_clock -name Internal_generated_clock_NSPLD|CLK -period 1000.000 CLK.
+Warn: User constraints coverage is too low at 0.0%.
+Info: Using config file ./NSPLD.bin to generate download file ./NSPLD_download.svf.
+
+Total 0 fatals, 0 errors, 4 warnings, 3 infos.
